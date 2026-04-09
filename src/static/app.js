@@ -63,31 +63,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Add event listeners for delete icons
       activitiesList.querySelectorAll('.delete-participant').forEach(icon => {
-        icon.addEventListener('click', async (e) => {
+        icon.addEventListener('click', (e) => {
           const activity = icon.getAttribute('data-activity');
           const email = icon.getAttribute('data-email');
           if (confirm(`Remove ${email} from ${activity}?`)) {
-            try {
-              const response = await fetch(`/activities/${encodeURIComponent(activity)}/unregister?email=${encodeURIComponent(email)}`, {
-                method: 'POST',
-              });
-              const result = await response.json();
-              if (response.ok) {
-                messageDiv.textContent = result.message;
-                messageDiv.className = "success";
-                fetchActivities();
-              } else {
-                messageDiv.textContent = result.detail || "An error occurred";
-                messageDiv.className = "error";
-              }
-              messageDiv.classList.remove("hidden");
-              setTimeout(() => { messageDiv.classList.add("hidden"); }, 5000);
-            } catch (error) {
-              messageDiv.textContent = "Failed to remove participant. Please try again.";
-              messageDiv.className = "error";
-              messageDiv.classList.remove("hidden");
-              console.error("Error removing participant:", error);
-            }
+            messageDiv.textContent = "Removing participants is not supported by the current API.";
+            messageDiv.className = "error";
+            messageDiv.classList.remove("hidden");
+            setTimeout(() => { messageDiv.classList.add("hidden"); }, 5000);
+            console.error(
+              `Unregister endpoint is unavailable for activity "${activity}" and email "${email}".`
+            );
           }
         });
       });
